@@ -3,42 +3,35 @@ const { Model } = require("sequelize");
 const { isBefore } = require("date-fns");
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
-    //Users -> users
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-    }
+    //Users->users
+    static associate(models) {}
   }
   User.init(
     {
       firstName: {
         field: "first_name",
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(64),
         allowNull: false,
         validate: {
-          isNull: true,
+          notNull: true,
           notEmpty: true,
         },
       },
       lastName: {
         field: "last_name",
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(64),
         allowNull: false,
         validate: {
-          isNull: true,
+          notNull: true,
           notEmpty: true,
         },
       },
       email: {
-        unique: true,
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
         validate: {
-          isNull: true,
+          notNull: true,
           notEmpty: true,
           isEmail: true,
         },
@@ -47,9 +40,8 @@ module.exports = (sequelize, DataTypes) => {
         field: "password_hash",
         type: DataTypes.TEXT,
         allowNull: false,
-        unique: true,
         validate: {
-          isNull: true,
+          notNull: true,
           notEmpty: true,
         },
       },
@@ -59,12 +51,15 @@ module.exports = (sequelize, DataTypes) => {
           isDate: true,
           isValidDate(value) {
             if (isBefore(new Date(), new Date(value))) {
-              throw new Error(`check your birthday`);
+              throw new Error("check your birthday");
             }
           },
         },
       },
-      isMale: { field: "is_male", type: DataTypes.BOOLEAN },
+      isMale: {
+        type: DataTypes.BOOLEAN,
+        field: "is_male",
+      },
     },
     {
       sequelize,
