@@ -1,4 +1,5 @@
 const { User } = require("../models");
+const { Op } = require("sequelize");
 
 module.exports.createUser = async (req, res, next) => {
   try {
@@ -12,7 +13,12 @@ module.exports.createUser = async (req, res, next) => {
 
 module.exports.getAllUsers = async (req, res, next) => {
   try {
-    const users = await User.findAll();
+    const users = await User.findAll({
+      attributes: {
+        exclude: ["password"],
+      },
+    });
+
     res.status(200).send({ data: users });
   } catch (error) {
     next(error);
