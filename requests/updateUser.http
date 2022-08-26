@@ -1,6 +1,7 @@
-PATCH http://localhost:3000/api/user-v2/2 HTTP/1.1
+PATCH http://localhost:3000/api/user-v2/3 HTTP/1.1
 Content-Type: application/json
 
 {
-  "birthday": "2020-10-10"
+  "firstname": "Tom",
+  "birthday": "2015-10-10"
 }

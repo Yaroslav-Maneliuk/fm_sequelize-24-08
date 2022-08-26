@@ -5,6 +5,8 @@ module.exports.createUser = async (req, res, next) => {
   try {
     const { body } = req;
     const createdUser = await User.create(body);
+    const user = createdUser.get()
+    user.password = undefined;
     // createdUser.password = undefined;
     res.status(201).send({ data: createdUser });
   } catch (error) {
@@ -20,6 +22,16 @@ module.exports.getAllUsers = async (req, res, next) => {
       },
     });
     res.status(200).send({ data: users });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports.getUser = async (req, res, next) => {
+  try {
+    const {userInstance} = req;
+    userInstance.password = undefined;
+    res.status(200).send({ data: userInstance });
   } catch (error) {
     next(error);
   }
@@ -41,8 +53,8 @@ module.exports.updateUser = async (req, res, next) => {
 
 module.exports.updateUserInstance = async (req, res, next) => {
   try {
-    const {params: { id },body,} = req;
-    const userInstance = await User.findByPk(id);
+    const {body, userInstance} = req;
+    // const userInstance = await User.findByPk(id);
     const updatedUser = await userInstance.update(body, {
       returning: true
     })
@@ -55,8 +67,8 @@ module.exports.updateUserInstance = async (req, res, next) => {
 
 module.exports.deleteUserInstance = async (req, res, next) => {
   try {
-    const {params: { id }} = req;
-    const userInstance = await User.findByPk(id);
+    const {userInstance} = req;
+    // const userInstance = await User.findByPk(id);
     const [result] = await userInstance.destroy({
       returning:true
     })

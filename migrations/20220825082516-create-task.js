@@ -25,7 +25,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       isDone: {
-        field: "user_id",
+        field: "is_done",
         allowNull: false,
         deafaultValue: false,
         type: Sequelize.BOOLEAN,
@@ -35,7 +35,7 @@ module.exports = {
         type: Sequelize.DATE,
       },
       createdAt: {
-        field: "created_t",
+        field: "created_at",
         allowNull: false,
         type: Sequelize.DATE,
       },

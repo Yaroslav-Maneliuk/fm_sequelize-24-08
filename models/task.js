@@ -29,7 +29,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       deadLine: {
         field: "dead_line",
-        allowNull: false,
         type: DataTypes.DATE,
         validate: { isDate: true },
       },
