@@ -1,0 +1,52 @@
+"use strict";
+module.exports = {
+  async up(queryInterface, Sequelize) {
+    await queryInterface.createTable("tasks", {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER,
+      },
+      userId: {
+        field: "user_id",
+        type: Sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: "users",
+          },
+          key: "id",
+        },
+        allowNull: false,
+        onDelete: "cascade",
+        onUpdate: "restrict",
+      },
+      body: {
+        type: Sequelize.STRING,
+      },
+      isDone: {
+        field: "user_id",
+        allowNull: false,
+        deafaultValue: false,
+        type: Sequelize.BOOLEAN,
+      },
+      deadLine: {
+        field: "dead_line",
+        type: Sequelize.DATE,
+      },
+      createdAt: {
+        field: "created_t",
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+      updatedAt: {
+        field: "updated_at",
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+    });
+  },
+  async down(queryInterface, Sequelize) {
+    await queryInterface.dropTable("tasks");
+  },
+};

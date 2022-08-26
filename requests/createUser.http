@@ -2,9 +2,9 @@ POST http://localhost:3000/api/user HTTP/1.1
 Content-Type: application/json
 
 {
-  "firstName": "Elon",
+  "firstName": "Elon18",
   "lastName": "Musk",
-  "email": "musk8@gmail.com",
+  "email": "musk18@gmail.com",
   "password": "musk123",
   "birthday": "1971-06-28",
   "isMale": true

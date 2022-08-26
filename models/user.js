@@ -4,7 +4,12 @@ const { isBefore } = require("date-fns");
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     //Users->users
-    static associate(models) {}
+    static associate(models) {
+      //UserId->userId
+      User.hasMany(models.Task, {
+        foreignKey: "userId",
+      });
+    }
   }
   User.init(
     {
@@ -43,6 +48,9 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: true,
           notEmpty: true,
+        },
+        set(v) {
+          this.setDataValue("password", "hash password");
         },
       },
       birthday: {
