@@ -1,15 +1,15 @@
 const { Task } = require("../models");
 
-module.exports.checkUser = async (req, res, next) => {
+module.exports.checkTask = async (req, res, next) => {
   try {
     const {
-      params: { id },
+      params: { userId },
     } = req;
-    const taskInstance = await Task.findByPk(id, );
+    const taskInstance = await Task.findByPk(userId);
     if (!taskInstance) {
       throw new Error("user not found!!!");
     }
-    req.userInstance = userInstance;
+    req.taskInstance = taskInstance;
     next();
   } catch (error) {
     next(error);

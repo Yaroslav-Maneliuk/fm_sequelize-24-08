@@ -1,3 +1,4 @@
+const createError = require("http-errors");
 const { User } = require("../models");
 const { Op } = require("sequelize");
 
@@ -5,7 +6,11 @@ module.exports.createUser = async (req, res, next) => {
   try {
     const { body } = req;
     const createdUser = await User.create(body);
-    const user = createdUser.get()
+    if (!createdUser) {
+      const error = createError(400, "Try again!");
+      next(error);
+    }
+    const user = createdUser.get();
     user.password = undefined;
     // createdUser.password = undefined;
     res.status(201).send({ data: createdUser });
@@ -16,10 +21,12 @@ module.exports.createUser = async (req, res, next) => {
 
 module.exports.getAllUsers = async (req, res, next) => {
   try {
+    const { pagination } = req;
     const users = await User.findAll({
       attributes: {
         exclude: ["password"],
       },
+      ...pagination,
     });
     res.status(200).send({ data: users });
   } catch (error) {
@@ -29,7 +36,7 @@ module.exports.getAllUsers = async (req, res, next) => {
 
 module.exports.getUser = async (req, res, next) => {
   try {
-    const {userInstance} = req;
+    const { userInstance } = req;
     userInstance.password = undefined;
     res.status(200).send({ data: userInstance });
   } catch (error) {
@@ -39,9 +46,12 @@ module.exports.getUser = async (req, res, next) => {
 
 module.exports.updateUser = async (req, res, next) => {
   try {
-    const {params: { id },body,} = req;
+    const {
+      params: { userId },
+      body,
+    } = req;
     const [row, [updateUser]] = await User.update(body, {
-      where: { id },
+      where: { userId },
       returning: true,
       // returning: ["first_name", "birthday"],
     });
@@ -53,11 +63,11 @@ module.exports.updateUser = async (req, res, next) => {
 
 module.exports.updateUserInstance = async (req, res, next) => {
   try {
-    const {body, userInstance} = req;
+    const { body, userInstance } = req;
     // const userInstance = await User.findByPk(id);
     const updatedUser = await userInstance.update(body, {
-      returning: true
-    })
+      returning: true,
+    });
     updatedUser.password = undefined;
     res.status(200).send({ data: updatedUser });
   } catch (error) {
@@ -67,17 +77,14 @@ module.exports.updateUserInstance = async (req, res, next) => {
 
 module.exports.deleteUserInstance = async (req, res, next) => {
   try {
-    const {userInstance} = req;
+    const { userInstance } = req;
     // const userInstance = await User.findByPk(id);
     const [result] = await userInstance.destroy({
-      returning:true
-    })
+      returning: true,
+    });
     userInstance.password = undefined;
     res.status(200).send({ data: userInstance });
   } catch (error) {
     next(error);
   }
 };
-
-
-
