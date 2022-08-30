@@ -13,7 +13,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       imagePath: {
-        field:"iamge_path",
+        field:"image_path",
         type: Sequelize.TEXT
       },
       description: {
