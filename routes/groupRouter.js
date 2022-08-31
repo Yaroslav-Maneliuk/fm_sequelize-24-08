@@ -25,5 +25,6 @@ groupRouter.post(
   upload.single("image"),
   GroupController.createImageToGroup
 );
+groupRouter.post("/:groupId", GroupController.addUserToGroup);
 
 module.exports = groupRouter;
