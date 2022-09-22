@@ -1,4 +1,4 @@
-const { Task } = require("../models");
+const { Task } = require('../models');
 
 module.exports.checkTask = async (req, res, next) => {
   try {
@@ -7,7 +7,7 @@ module.exports.checkTask = async (req, res, next) => {
     } = req;
     const taskInstance = await Task.findByPk(userId);
     if (!taskInstance) {
-      throw new Error("user not found!!!");
+      throw new Error('user not found!!!');
     }
     req.taskInstance = taskInstance;
     next();
